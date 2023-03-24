@@ -13,7 +13,7 @@ import Chart from "./Chart";
 import Price from "./Price";
 
 const Title = styled.h1`
-  font-size: 48px;
+  font-size: 4rem;
   color: ${(props) => props.theme.accentColor};
 `;
 
@@ -42,19 +42,20 @@ const Main = styled.div`
 
 const Card = styled.div`
   display: flex;
-  justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: space-around;
+  background-color: ${(props) => props.theme.cardBgColor};
   padding: 10px 20px;
   border-radius: 10px;
 `;
 
 const OverviewItem = styled.div`
   display: flex;
+  justify-content: center;
   align-items: center;
   width: 33%;
 
   span:first-child {
-    font-size: 10px;
+    font-size: 0.8rem;
     font-weight: 400;
     text-transform: uppercase;
     margin-right: 0.5rem;
@@ -75,9 +76,10 @@ const Tabs = styled.div`
 const Tab = styled.span<{ isActive: boolean }>`
   text-align: center;
   text-transform: uppercase;
-  font-size: 12px;
+  font-size: 0.8rem;
   font-weight: 400;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: ${(props) => props.theme.accentColor};
+  color: ${(props) => props.theme.textColor};
   border-radius: 10px;
   color: ${(props) =>
     props.isActive ? props.theme.accentColor : props.theme.textColor};
@@ -87,11 +89,18 @@ const Tab = styled.span<{ isActive: boolean }>`
   }
 `;
 
-interface Routeparams {
+const LabelTitle = styled.div`
+  font-weight: 400;
+  font-size: 0.9rem;
+  color: ${(props) => props.theme.accentColor};
+  margin-right: 0.5rem;
+`;
+
+export interface Routeparams {
   coinId: string;
 }
 
-interface Routestate {
+export interface Routestate {
   name: string;
 }
 
@@ -178,15 +187,15 @@ function Coin() {
           <Main>
             <Card>
               <OverviewItem>
-                <span>Rank :</span>
+                <LabelTitle>Rank : </LabelTitle>
                 <span>{infoData?.rank}</span>
               </OverviewItem>
               <OverviewItem>
-                <span>Symbol : </span>
+                <LabelTitle>Symbol : </LabelTitle>
                 <span>{infoData?.symbol}</span>
               </OverviewItem>
               <OverviewItem>
-                <span>Open source: </span>
+                <LabelTitle>Open source : </LabelTitle>
                 <span>{infoData?.open_source ? "Yes" : "No"}</span>
               </OverviewItem>
             </Card>
@@ -195,11 +204,11 @@ function Coin() {
 
             <Card>
               <OverviewItem>
-                <span>Total Suply : </span>
+                <LabelTitle>Total Suply : </LabelTitle>
                 <span>{tickersData?.total_supply}</span>
               </OverviewItem>
               <OverviewItem>
-                <span>Max Supply : </span>
+                <LabelTitle>Max Supply : </LabelTitle>
                 <span>{tickersData?.max_supply}</span>
               </OverviewItem>
             </Card>

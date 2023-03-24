@@ -1,9 +1,10 @@
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { fetchCoins } from "../api";
 import { isDarkAtom } from "./atoms";
 import { useSetRecoilState } from "recoil";
+import { useRecoilValue } from "recoil";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -40,8 +41,10 @@ const Coin = styled.li`
 `;
 
 const Title = styled.h1`
-  font-size: 48px;
+  font-size: 3.5rem;
+  font-weight: 500;
   color: ${(props) => props.theme.accentColor};
+  flex: 1;
 `;
 
 const Loader = styled.span`
@@ -65,15 +68,58 @@ interface ICoin {
   type: string;
 }
 
+const ToggleBtn = styled.button<{ toggle: boolean }>`
+  width: 6rem;
+  height: 3rem;
+  border-radius: 30px;
+  border: 3px solid black;
+  cursor: pointer;
+  background-color: ${(props) => (props.toggle ? "whitesmoke" : "grey")};
+  position: relative;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.5s ease-in-out;
+`;
+
+const Circle = styled.div<{ toggle: boolean }>`
+  background-color: ${(props) => props.theme.accentColor};
+  width: 2rem;
+  height: 2rem;
+  position: absolute;
+  border-radius: 50px;
+  bottom: 15%;
+  transition: all 0.5s ease-in-out;
+  ${(props) =>
+    props.toggle &&
+    css`
+      transform: translate(3rem, 0);
+      transition: all 0.5s ease-in-out;
+    `}
+`;
+
 function Coins() {
   const setDarkAtom = useSetRecoilState(isDarkAtom);
   const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
+  const isDark = useRecoilValue(isDarkAtom);
   const { isLoading, data } = useQuery<ICoin[]>("allCoins", fetchCoins);
   return (
     <Container>
       <Header>
-        <Title>코인</Title>
-        <button onClick={toggleDarkAtom}>Toggle Mode</button>
+        <div style={{ flex: 1 }}></div>
+        <Title>COINS</Title>
+        <div
+          style={{
+            flex: 1,
+            display: "flex",
+            justifyContent: "right",
+            alignItems: "center",
+          }}
+        >
+          <ToggleBtn onClick={toggleDarkAtom} toggle={isDark}>
+            <Circle toggle={isDark} />
+            <span>{isDark ? "dark" : "light"}</span>
+          </ToggleBtn>
+        </div>
       </Header>
       {isLoading ? (
         <Loader>Loading...</Loader>
@@ -88,7 +134,7 @@ function Coins() {
                 }}
               >
                 <Img
-                  src={`https://cryptoicon-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
+                  src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
                 />
                 {coin.name} &rarr;
               </Link>
