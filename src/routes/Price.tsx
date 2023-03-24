@@ -1,5 +1,5 @@
 function Price() {
-  return <h1>Price</h1>;
+  return <span>Price</span>;
 }
 
 export default Price;

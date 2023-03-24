@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {
   Switch,
   Route,
@@ -10,8 +9,8 @@ import styled from "styled-components";
 import { fetchCoinInfo, fetchCoinTickers } from "../api";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
-import Price from "./Price";
 import Chart from "./Chart";
+import Price from "./Price";
 
 const Title = styled.h1`
   font-size: 48px;
@@ -25,7 +24,7 @@ const Loader = styled.span`
 
 const Container = styled.div`
   padding: 0px 20px;
-  max-width: 480px;
+  max-width: 40%;
   margin: 0 auto;
 `;
 
@@ -36,27 +35,34 @@ const Header = styled.header`
   align-items: center;
 `;
 
-const Overview = styled.div`
+const Main = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Card = styled.div`
   display: flex;
   justify-content: space-between;
   background-color: rgba(0, 0, 0, 0.5);
   padding: 10px 20px;
   border-radius: 10px;
 `;
+
 const OverviewItem = styled.div`
   display: flex;
-  flex-direction: column;
   align-items: center;
   width: 33%;
+
   span:first-child {
     font-size: 10px;
     font-weight: 400;
     text-transform: uppercase;
-    margin-bottom: 5px;
+    margin-right: 0.5rem;
   }
 `;
 const Description = styled.p`
   margin: 20px 0px;
+  padding: 0.3rem;
 `;
 
 const Tabs = styled.div`
@@ -110,7 +116,7 @@ interface InfoData {
   last_data_at: string;
 }
 
-interface PriceData {
+export interface PriceData {
   id: string;
   name: string;
   symbol: string;
@@ -169,31 +175,35 @@ function Coin() {
         <Loader>Loading...</Loader>
       ) : (
         <>
-          <Overview>
-            <OverviewItem>
-              <span>Rank:</span>
-              <span>{infoData?.rank}</span>
-            </OverviewItem>
-            <OverviewItem>
-              <span>Symbol:</span>
-              <span>{infoData?.symbol}</span>
-            </OverviewItem>
-            <OverviewItem>
-              <span>Open source:</span>
-              <span>{infoData?.open_source ? "Yes" : "No"}</span>
-            </OverviewItem>
-            <Description>{infoData?.description}</Description>
-            <Overview>
+          <Main>
+            <Card>
               <OverviewItem>
-                <span>Total Suply:</span>
+                <span>Rank :</span>
+                <span>{infoData?.rank}</span>
+              </OverviewItem>
+              <OverviewItem>
+                <span>Symbol : </span>
+                <span>{infoData?.symbol}</span>
+              </OverviewItem>
+              <OverviewItem>
+                <span>Open source: </span>
+                <span>{infoData?.open_source ? "Yes" : "No"}</span>
+              </OverviewItem>
+            </Card>
+
+            <Description>{infoData?.description}</Description>
+
+            <Card>
+              <OverviewItem>
+                <span>Total Suply : </span>
                 <span>{tickersData?.total_supply}</span>
               </OverviewItem>
               <OverviewItem>
-                <span>Max Supply:</span>
+                <span>Max Supply : </span>
                 <span>{tickersData?.max_supply}</span>
               </OverviewItem>
-            </Overview>
-          </Overview>
+            </Card>
+          </Main>
 
           <Tabs>
             <Tab isActive={chartMatch !== null}>
